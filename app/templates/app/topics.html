@@ -1,13 +1,17 @@
 {% extends "app/base.html" %}
 
 {% block content %}
-    Tópicos:
+    <p>Tópicos:</p>
     <ul>
         {% for topic in topics %}
-            <li>{{ topic }}</li>
+            <li>
+                <a href="{% url 'topic' topic.id %}">{{ topic }}</a>
+            </li>
         {% empty %}
             <li>Nao ha topicos adicionados.</li>
         {% endfor %}
     </ul>
+
+    <a href="{% url 'new_topic' %}">Adicionar novos topicos</a>
 
 {% endblock content %}

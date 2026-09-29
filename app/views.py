@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from .models import Topic 
+from .forms import TopicForm
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 
-# Create your views here.
 
 def index(request):
     """Pagina principal."""
@@ -22,3 +24,18 @@ def topic(request, topic_id):
     context = {'topic':topic, 'entries':entries}
     return render(request, 'app/topic.html', context)
 
+
+def new_topic(request):
+    """Adiciona um novo assunto."""
+    if request.method != 'POST':
+        # Nehum dado submetido, cria um formulario em branco.
+        form = TopicForm()
+    else:
+        # Dados de POST submetidos, processa os dados.
+        form = TopicForm(request.POST)
+        if form.is_valid():
+            form.save() # Salva os dados no banco de dados.
+            return HttpResponseRedirect(reverse('topics'))
+
+    context = {'form':form}
+    return render(request, 'app/new_topic.html', context)
